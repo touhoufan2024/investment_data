@@ -10,9 +10,11 @@ fi
 
 mkdir -p $WORKING_DIR/dolt
 
-[ ! -d "$WORKING_DIR/dolt/investment_data" ] && cd $WORKING_DIR/dolt && dolt clone chenditc/investment_data
+[ ! -d "$WORKING_DIR/dolt/investment_data" ] && ln -s /home/ash/dolt/investment_data $WORKING_DIR/dolt/investment_data
+[ ! -d "$WORKING_DIR/investment_data" ] && ln -s /home/ash/investment_data $WORKING_DIR/investment_data
 [ ! -d "$WORKING_DIR/qlib" ] && git clone $QLIB_REPO "$WORKING_DIR/qlib"
 
+killall dolt
 cd $WORKING_DIR/dolt/investment_data
 dolt pull origin master
 dolt sql-server &
