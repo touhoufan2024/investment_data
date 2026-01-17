@@ -1,7 +1,10 @@
 set -e
 set -x
-WORKING_DIR=${1} 
-QLIB_REPO=${2:-https://github.com/microsoft/qlib.git} 
+# WORKING_DIR=${1} 
+WORKING_DIR=/tmp/investment_data_working_dir
+mkdir -p $WORKING_DIR
+rm -rf $WORKING_DIR/*
+QLIB_REPO=${2:-https://github.com/touhoufan2024/qlib.git} 
 
 if ! command -v dolt &> /dev/null
 then
@@ -14,7 +17,7 @@ mkdir -p $WORKING_DIR/dolt
 [ ! -d "$WORKING_DIR/investment_data" ] && ln -s /home/ash/investment_data $WORKING_DIR/investment_data
 [ ! -d "$WORKING_DIR/qlib" ] && git clone $QLIB_REPO "$WORKING_DIR/qlib"
 
-killall dolt
+# killall dolt
 cd $WORKING_DIR/dolt/investment_data
 dolt pull origin master
 dolt sql-server &
@@ -49,3 +52,5 @@ if [ -d "${OUTPUT_DIR}" ]; then
 else
     echo "Generated tarball at $(pwd)/qlib_bin.tar.gz"
 fi
+
+tar -zxvf ./qlib_bin.tar.gz -C ~/.qlib/qlib_data/cn_data --strip-components=3
